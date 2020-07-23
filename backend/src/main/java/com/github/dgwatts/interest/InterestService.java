@@ -1,11 +1,11 @@
 package com.github.dgwatts.interest;
 
 public interface InterestService {
-	InterestCalculationParameters calculateInterest(InterestCalculationParameters parameters);
+	InterestDetails calculateInterest(InterestDetails parameters);
 
-	InterestCalculationParameters[] getHistory();
+	InterestDetails[] getHistory();
 
 	void clearHistory();
 
-	InterestCalculationParameters save(InterestCalculationParameters parameters);
+	InterestDetails save(InterestDetails parameters);
 }

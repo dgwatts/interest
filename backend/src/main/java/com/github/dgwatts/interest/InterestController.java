@@ -15,17 +15,17 @@ public class InterestController {
 	}
 
 	@RequestMapping(value = "/calculate", consumes = "application/json", method = RequestMethod.POST)
-	public int calculateInterest(InterestCalculationParameters parameters) {
+	public int calculateInterest(InterestDetails parameters) {
 		return interestService.calculateInterest(parameters);
 	}
 
 	@RequestMapping(value = "/persist", consumes = "application/json", method = RequestMethod.POST)
-	public InterestCalculationParameters save(InterestCalculationParameters parameters) {
+	public InterestDetails save(InterestDetails parameters) {
 		return interestService.save(parameters);
 	}
 
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
-	public InterestCalculationParameters[] getHistory() {
+	public InterestDetails[] getHistory() {
 
 		return interestService.getHistory();
 	}

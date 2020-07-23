@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InterestRepo extends MongoRepository<InterestCalculationParameters, Long> {
+public interface InterestRepo extends MongoRepository<InterestDetails, Long> {
 
 
 
