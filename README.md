@@ -16,7 +16,10 @@
 
 * Currency used will be GBP / USD like (whole units, 100 subunits), but not declared as any specific currency
 * Interest rates can be positive, zero, and negative integers
+* The first interest rate band must start at zero
+* The last interest rate band may have no upper bound, in which case it applies any amount above the upper bound, to Long.MAX_VALUE. If it does have an upper bound, any money above that accrues no interest.
 * There can be no gaps or overlaps in the interest rate bands
+* The upper bound of a band must be greater than the lower bound
 
 ## Tools used
 
