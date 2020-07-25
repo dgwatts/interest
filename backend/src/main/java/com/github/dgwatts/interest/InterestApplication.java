@@ -1,4 +1,4 @@
-package org.github.dgwatts.interest;
+package com.github.dgwatts.interest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
