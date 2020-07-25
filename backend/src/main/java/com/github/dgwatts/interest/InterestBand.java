@@ -1,11 +1,27 @@
 package com.github.dgwatts.interest;
 
-public class InterestBand {
+public class InterestBand implements Comparable <InterestBand>{
 
 	private long lowerBound;
-	private long upperBound;
+	private Long upperBound;
 	private int interestRate;
 	private long interestEarned;
+
+	public InterestBand() {	}
+
+	public InterestBand(long lowerBound, Long upperBound, int interestRate) {
+		this(lowerBound, upperBound, interestRate, 0L);
+	}
+
+	public InterestBand(long lowerBound, Long upperBound, int interestRate, long interestEarned) {
+		this.lowerBound = lowerBound;
+		if(upperBound == null) {
+			upperBound = Long.MAX_VALUE;
+		}
+		this.upperBound = upperBound;
+		this.interestRate = interestRate;
+		this.interestEarned = interestEarned;
+	}
 
 	public long getLowerBound() {
 		return lowerBound;
@@ -16,11 +32,14 @@ public class InterestBand {
 		return this;
 	}
 
-	public long getUpperBound() {
+	public Long getUpperBound() {
 		return upperBound;
 	}
 
-	public InterestBand setUpperBound(long upperBound) {
+	public InterestBand setUpperBound(Long upperBound) {
+		if(upperBound == null) {
+			upperBound = Long.MAX_VALUE;
+		}
 		this.upperBound = upperBound;
 		return this;
 	}
@@ -51,5 +70,10 @@ public class InterestBand {
 				", interestRate=" + interestRate +
 				", interestEarned=" + interestEarned +
 				'}';
+	}
+
+	@Override
+	public int compareTo(InterestBand o) {
+		return Long.valueOf(this.getLowerBound()).compareTo(Long.valueOf(o.getLowerBound()));
 	}
 }

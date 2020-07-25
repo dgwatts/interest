@@ -5,6 +5,8 @@ public class InterestDetails {
 
 	private InterestBand[] bands;
 
+	private long baseAmount;
+
 	private long totalInterest;
 
 	public Long getId() {
@@ -22,6 +24,15 @@ public class InterestDetails {
 
 	public InterestDetails setBands(InterestBand[] bands) {
 		this.bands = bands;
+		return this;
+	}
+
+	public long getBaseAmount() {
+		return baseAmount;
+	}
+
+	public InterestDetails setBaseAmount(long baseAmount) {
+		this.baseAmount = baseAmount;
 		return this;
 	}
 

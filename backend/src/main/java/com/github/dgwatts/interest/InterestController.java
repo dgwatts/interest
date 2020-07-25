@@ -15,7 +15,7 @@ public class InterestController {
 	}
 
 	@RequestMapping(value = "/calculate", consumes = "application/json", method = RequestMethod.POST)
-	public int calculateInterest(InterestDetails parameters) {
+	public InterestDetails calculateInterest(InterestDetails parameters) {
 		return interestService.calculateInterest(parameters);
 	}
 
