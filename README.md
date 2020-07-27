@@ -11,6 +11,7 @@
 * All components running locally, single user mode
 * No need to distinguish users
 * No security requirements (http, mongo credentials stored in a local config file)
+* No need for i81n / l10n / a11y
 
 ## Functional Assumptions
 
@@ -45,3 +46,32 @@
   * List of interest rate bands
     * eg 1000 (lower bound) to 5000 (upper bound) gains 2% (interest rate) 
   * Amounts of earned interest calculated  
+  
+### Front End
+
+* Single Page
+* ![](./docs/balsamiq.png)
+
+## Plan of action
+
+### Stage 1
+
+* Bootstrap Spring Boot project
+* Create project structure
+* Add 3-tier skeleton
+* Write tests for calculator
+* Implement calculator to pass tests
+
+### Stage 2
+
+* Bootstrap React Project
+* Implement UI and REST API access layer
+* Connect frontend and backend projects
+* Finish backend
+
+### Stage 3
+
+* Install and configure MongoDB
+* Add persistence and retrieval
+* Improve styling
+* Finish frontend
