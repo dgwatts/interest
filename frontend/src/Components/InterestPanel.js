@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SavedPanel from "./SavedPanel";
 import InterestBands from "./InterestBands";
-import {calculate, getSaved} from "../api";
+import {calculate} from "../api";
 
 /**
  * The complete UI component for the interest calculator
@@ -39,22 +39,31 @@ class InterestPanel extends Component {
 		//getSaved().then(response => this.setState({saved: response}))
 	}
 
-	updateBaseAmount = (newBaseAmount) => {
-		this.setState({baseAmount: newBaseAmount})
+	updateBaseAmount = (event) => {
+		this.setState({baseAmount: event.target.value})
 	}
 
 	calculateInterest = () => {
 		// Get the bands from state
 
 		// Send them to the backend
-		calculate(this.state.bands, this.state.baseAmount).then(response => {
-
+		calculate(this.state.bands, this.state.baseAmount).then(data => {
+			console.log("calculate", data);
+			this.handleResponse(null);
+			this.setState({interestEarned: data.totalInterest})
 		})
+			.catch(response => {
+				this.handleResponse(response.response.data);
+			});
 	}
 
 	save = () => {
 		// TODO implement in stage 3
 		// Persist the current values
+	}
+
+	handleResponse = (message) => {
+		this.setState({errorMessage: message})
 	}
 
 	render() {
@@ -70,9 +79,11 @@ class InterestPanel extends Component {
 				</div>
 				<button onClick={this.save}>Save</button>
 				<SavedPanel updateBands={this.updateBands}/>
+				{this.state.errorMessage && <div className={"errorMessage"}>{this.state.errorMessage}</div>}
 			</>
 		);
 	}
 }
 
 export default InterestPanel;
+

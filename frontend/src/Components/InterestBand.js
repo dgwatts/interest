@@ -11,12 +11,20 @@ class InterestBand extends Component {
 		this.props.deleteBand(this.props.idx);
 	}
 
+	updateBand = (event, field) => {
+		let newValue = parseInt(event.target.value);
+		if(!newValue) {
+			newValue = "";
+		}
+		this.props.updateBand(this.props.idx, {...this.props.band, [field]: newValue});
+	}
+
 	render() {
 		return (
 			<tr>
-				<td className={"lowerBound"}>{this.props.band.lowerBound}</td>
-				<td className={"upperBound"}>{this.props.band.upperBound}</td>
-				<td className={"interestRate"}>{this.props.band.interestRate}</td>
+				<td className={"lowerBound"}><input type={"text"} value={this.props.band.lowerBound} onChange={event => this.updateBand(event, "lowerBound")}/></td>
+				<td className={"upperBound"}><input type={"text"} value={this.props.band.upperBound} onChange={event => this.updateBand(event, "upperBound")}/></td>
+				<td className={"interestRate"}><input type={"text"} value={this.props.band.interestRate} onChange={event => this.updateBand(event, "interestRate")}/></td>
 				<td className={"interestRate"}><button onClick={this.delete}>Delete band</button></td>
 			</tr>
 		);

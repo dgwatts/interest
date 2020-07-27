@@ -12,6 +12,11 @@ class InterestBands extends Component {
 		}
 	}
 
+	updateBand = (idx, band) => {
+		this.props.bands[idx] = band;
+		this.props.updateBands(this.props.bands);
+	}
+
 	render() {
 		return (
 			<>
@@ -22,11 +27,14 @@ class InterestBands extends Component {
 						</thead>
 						<tbody>
 							{this.props.bands.map((band, idx) => {
-								return <InterestBand band={band} key={idx} idx={idx} deleteBand={this.props.deleteBand}/>
+								return <InterestBand band={band} key={idx} idx={idx} updateBand={this.updateBand} deleteBand={this.props.deleteBand}/>
 							})}
 						</tbody>
 					</table>
-					<button onClick={() => {this.props.updateBands(this.props.bands.push(["","",""]))}}>Add another band</button>
+					<button onClick={() => {
+						this.props.bands.push({lowerBound: "", upperBound: "", interestRate:""});
+						this.props.updateBands(this.props.bands);
+					}}>Add another band</button>
 				</div>
 			</>
 		);
