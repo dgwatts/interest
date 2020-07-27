@@ -16,44 +16,15 @@ public class InterestServiceImpl implements InterestService {
 
 	@Override
 	public InterestDetails calculateInterest(InterestDetails details) {
-
-		validateDetails(details);
-		doCalculateInterest(details);
-		return save(details);
+		return doCalculateInterest(details);
+		//return save(details);
 	}
 
 	protected InterestDetails doCalculateInterest(InterestDetails details) {
 
-		// Validate the bands
-		Arrays.sort(details.getBands());
-		if(details.getBands().length == 0) {
-			throw new IllegalArgumentException("Must have at least one interest rate band");
-		}
+		validateDetails(details);
 
-		if(details.getBands()[0].getLowerBound() != 0) {
-			throw new IllegalArgumentException("First band must start at 0");
-		}
-
-		long lastUpperBound = 0;
-		for(InterestBand ib : details.getBands()) {
-			if(ib.getLowerBound() >= ib.getUpperBound()) {
-				throw new IllegalArgumentException("Upper bound of a band must be greater than the lower bound");
-			}
-
-			if(ib.getLowerBound() < lastUpperBound) {
-				// overlap
-				throw new IllegalArgumentException("Bands must be contiguous, without gaps");
-			}
-
-			if(ib.getLowerBound() > lastUpperBound) {
-				// overlap
-				throw new IllegalArgumentException("Bands must be contiguous, without overlaps");
-			}
-
-			lastUpperBound = ib.getUpperBound();
-		}
-
-		long totslInterest = 0;
+		long totalInterest = 0;
 		for(InterestBand ib : details.getBands()) {
 			long amountOfThisBandUsed = -1;
 
@@ -71,14 +42,42 @@ public class InterestServiceImpl implements InterestService {
 			// TODO do this as money calc
 			long interestEarnedInThisBand = ((amountOfThisBandUsed * ib.getInterestRate()) / 100);
 			ib.setInterestEarned(interestEarnedInThisBand);
-			totslInterest += interestEarnedInThisBand;
+			totalInterest += interestEarnedInThisBand;
 		}
 
-		details.setTotalInterest(totslInterest);
+		details.setTotalInterest(totalInterest);
 		return details;
 	}
 
 	protected void validateDetails(InterestDetails details) {
+		// Validate the bands
+		Arrays.sort(details.getBands());
+		if(details.getBands().length == 0) {
+			throw new InterestException("Must have at least one interest rate band");
+		}
+
+		if(details.getBands()[0].getLowerBound() != 0) {
+			throw new InterestException("First band must start at 0");
+		}
+
+		long lastUpperBound = 0;
+		for(InterestBand ib : details.getBands()) {
+			if(ib.getLowerBound() >= ib.getUpperBound()) {
+				throw new InterestException("Upper bound of a band must be greater than the lower bound");
+			}
+
+			if(ib.getLowerBound() < lastUpperBound) {
+				// Overlap
+				throw new InterestException("Bands must be contiguous, without overlap");
+			}
+
+			if(ib.getLowerBound() > lastUpperBound) {
+				// Gaps
+				throw new InterestException("Bands must be contiguous, without gaps");
+			}
+
+			lastUpperBound = ib.getUpperBound();
+		}
 	}
 
 	@Override
