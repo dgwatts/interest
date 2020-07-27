@@ -1,11 +1,12 @@
 package com.github.dgwatts.interest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/interest")
+@RestController
 public class InterestController {
 
 	private InterestService interestService;
@@ -15,7 +16,7 @@ public class InterestController {
 	}
 
 	@RequestMapping(value = "/calculate", consumes = "application/json", method = RequestMethod.POST)
-	public InterestDetails calculateInterest(InterestDetails parameters) {
+	public InterestDetails calculateInterest(@RequestBody InterestDetails parameters) {
 		return interestService.calculateInterest(parameters);
 	}
 

@@ -1,6 +1,7 @@
 package com.github.dgwatts.interest;
 
 public class InterestDetails {
+
 	private Long id;
 
 	private InterestBand[] bands;
