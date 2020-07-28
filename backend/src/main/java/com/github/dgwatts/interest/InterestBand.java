@@ -15,9 +15,6 @@ public class InterestBand implements Comparable <InterestBand>{
 
 	public InterestBand(long lowerBound, Long upperBound, int interestRate, long interestEarned) {
 		this.lowerBound = lowerBound;
-		if(upperBound == null) {
-			upperBound = Long.MAX_VALUE;
-		}
 		this.upperBound = upperBound;
 		this.interestRate = interestRate;
 		this.interestEarned = interestEarned;
@@ -37,11 +34,20 @@ public class InterestBand implements Comparable <InterestBand>{
 	}
 
 	public InterestBand setUpperBound(Long upperBound) {
-		if(upperBound == null) {
-			upperBound = Long.MAX_VALUE;
-		}
 		this.upperBound = upperBound;
 		return this;
+	}
+
+	/**
+	 * As the upper bound can be null, this method returns an actual value which can easily be used in calculation
+	 * @return the upper bound value, or Long.MAX_VALUE
+	 */
+	public long getEffectiveUpperBound() {
+		if(upperBound == null) {
+			return Long.MAX_VALUE;
+		}
+
+		return upperBound;
 	}
 
 	public int getInterestRate() {

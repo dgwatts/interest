@@ -11,7 +11,7 @@ public class ExceptionMapper {
 
 	@ExceptionHandler(InterestException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<String> exceptionHandler(InterestException ex) {
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	public ResponseEntity<String> exceptionHandler(InterestException e) {
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }

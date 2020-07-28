@@ -21,8 +21,8 @@ public class InterestController {
 	}
 
 	@RequestMapping(value = "/persist", consumes = "application/json", method = RequestMethod.POST)
-	public InterestDetails save(InterestDetails parameters) {
-		return interestService.save(parameters);
+	public InterestDetails[] persist(@RequestBody InterestDetails parameters) {
+		return interestService.persist(parameters);
 	}
 
 	@RequestMapping(value = "/history", method = RequestMethod.GET)

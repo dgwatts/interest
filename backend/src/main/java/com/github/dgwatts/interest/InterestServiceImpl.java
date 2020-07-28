@@ -31,15 +31,14 @@ public class InterestServiceImpl implements InterestService {
 			if(ib.getLowerBound() >= details.getBaseAmount()) {
 				// Nothing in this band
 				amountOfThisBandUsed = 0;
-			} else if(ib.getUpperBound() < details.getBaseAmount()) {
+			} else if(ib.getEffectiveUpperBound() < details.getBaseAmount()) {
 				// all of this band
-				amountOfThisBandUsed = ib.getUpperBound() - ib.getLowerBound();
+				amountOfThisBandUsed = ib.getEffectiveUpperBound() - ib.getLowerBound();
 			} else {
 				// some of this band
 				amountOfThisBandUsed = details.getBaseAmount() - ib.getLowerBound();
 			}
 
-			// TODO do this as money calc
 			long interestEarnedInThisBand = ((amountOfThisBandUsed * ib.getInterestRate()) / 100);
 			ib.setInterestEarned(interestEarnedInThisBand);
 			totalInterest += interestEarnedInThisBand;
@@ -62,7 +61,7 @@ public class InterestServiceImpl implements InterestService {
 
 		long lastUpperBound = 0;
 		for(InterestBand ib : details.getBands()) {
-			if(ib.getLowerBound() >= ib.getUpperBound()) {
+			if(ib.getLowerBound() >= ib.getEffectiveUpperBound()) {
 				throw new InterestException("Upper bound of a band must be greater than the lower bound");
 			}
 
@@ -76,14 +75,13 @@ public class InterestServiceImpl implements InterestService {
 				throw new InterestException("Bands must be contiguous, without gaps");
 			}
 
-			lastUpperBound = ib.getUpperBound();
+			lastUpperBound = ib.getEffectiveUpperBound();
 		}
 	}
 
 	@Override
 	public InterestDetails[] getHistory() {
-		interestRepo.findAll();
-		return new InterestDetails[0];
+		return interestRepo.findAll().toArray(new InterestDetails[0]);
 	}
 
 	@Override
@@ -92,7 +90,11 @@ public class InterestServiceImpl implements InterestService {
 	}
 
 	@Override
-	public InterestDetails save(InterestDetails parameters) {
-		return interestRepo.save(parameters);
+	public InterestDetails[] persist(InterestDetails parameters) {
+
+		validateDetails(parameters);
+		calculateInterest(parameters);
+		interestRepo.save(parameters);
+		return getHistory();
 	}
 }
