@@ -28,6 +28,33 @@
 }
 
 .errorMessage {
-	padding-top: 50px;
+	height: 40px;
+	padding-top: 10px;
 	color: red;
+}
+
+.savedItem {
+	padding-top: 20px;
+	width: 400px;
+	overflow: auto;
+}
+
+.savedItemInfo {
+	display: block;
+	width: 100%;
+	float: left;
+}
+
+.savedBands {
+	width: 300px;
+	float: left;
+}
+.useButton {
+	width: 40px;
+	float: right;
+}
+
+.savedBand {
+	width: 300px;
+	display: block;
 }

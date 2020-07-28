@@ -12,11 +12,7 @@ class InterestBand extends Component {
 	}
 
 	updateBand = (event, field) => {
-		let newValue = parseInt(event.target.value);
-		if(!newValue) {
-			newValue = "";
-		}
-		this.props.updateBand(this.props.idx, {...this.props.band, [field]: newValue});
+		this.props.updateBand(this.props.idx, {...this.props.band, [field]: event.target.value});
 	}
 
 	render() {

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import SavedPanel from "./SavedPanel";
 import InterestBands from "./InterestBands";
-import {calculate} from "../api";
+import {calculate, persist, getSaved, deleteAllSaved} from "../api";
 
 /**
  * The complete UI component for the interest calculator
@@ -23,6 +23,24 @@ class InterestPanel extends Component {
 		}
 	}
 
+	selectSaved = (id) => {
+		const filtered = this.state.saved.filter((saved) => saved.id === id)
+		if(filtered.length === 0) {
+			this.handleResponse("No saved entried matched");
+		}
+		else if(filtered.length > 1) {
+			this.handleResponse("Multiple saved entried matched");
+		}
+		else {
+			this.handleResponse(null);
+			this.setState({
+				bands: filtered[0].bands,
+				baseAmount: filtered[0].baseAmount,
+				interestEarned: filtered[0].totalInterest
+			});
+		}
+	}
+
 	updateBands = (newBands) => {
 		this.setState({bands: newBands})
 	}
@@ -34,9 +52,8 @@ class InterestPanel extends Component {
 	}
 
 	componentDidMount() {
-		// TODO implement in stage 3
 		// Retrieve saved values
-		//getSaved().then(response => this.setState({saved: response}))
+		getSaved().then(response => this.setState({saved: response}))
 	}
 
 	updateBaseAmount = (event) => {
@@ -44,27 +61,47 @@ class InterestPanel extends Component {
 	}
 
 	calculateInterest = () => {
-		// Get the bands from state
-
-		// Send them to the backend
-		calculate(this.state.bands, this.state.baseAmount).then(data => {
-			console.log("calculate", data);
-			this.handleResponse(null);
-			this.setState({interestEarned: data.totalInterest})
-		})
+		// Send the bands to the backend
+		calculate(this.state.bands, this.state.baseAmount)
+			.then(data => {
+				this.handleResponse(null);
+				this.setState({interestEarned: data.totalInterest})
+			})
 			.catch(response => {
-				this.handleResponse(response.response.data);
+				this.handleResponse(response);
 			});
 	}
 
-	save = () => {
-		// TODO implement in stage 3
-		// Persist the current values
-	}
+	saveValues = () => {
+		persist(this.state.bands, this.state.baseAmount)
+			.then(data => {
+				this.handleResponse(null);
+				this.setState({saved: data});
+			})
+			.catch(response => {
+				this.handleResponse(response.response.data);
+			});
+	};
 
-	handleResponse = (message) => {
-		this.setState({errorMessage: message})
-	}
+	deleteAllSaved = () => {
+		deleteAllSaved()
+			.then(() => this.setState({saved: []}));
+	};
+
+	handleResponse = (response) => {
+		if(!response || typeof response === "string") {
+			// Internal error or clear error
+			this.setState({errorMessage: response});
+		}
+		else if(typeof response.response.data === "string") {
+			// backend-handled error
+			this.setState({errorMessage: response.response.data})
+		}
+		else {
+			// Jackson-handled error
+			this.setState({errorMessage: response.response.data.message})
+		}
+	};
 
 	render() {
 		return (
@@ -77,13 +114,12 @@ class InterestPanel extends Component {
 				<div>
 					<div><span className={"label"}>Interest Earned: </span><span>{this.state.interestEarned}</span></div>
 				</div>
-				<button onClick={this.save}>Save</button>
-				<SavedPanel updateBands={this.updateBands}/>
-				{this.state.errorMessage && <div className={"errorMessage"}>{this.state.errorMessage}</div>}
+				<button onClick={this.saveValues}>Save</button>
+				<div className={"errorMessage"}>{this.state.errorMessage && this.state.errorMessage}</div>
+				<SavedPanel saved={this.state.saved} selectSaved={this.selectSaved} deleteAllSaved={this.deleteAllSaved}/>
 			</>
 		);
 	}
 }
 
 export default InterestPanel;
-

@@ -1,6 +1,5 @@
 // Rest calls go in here
 import axios from "axios";
-import response from "./Components/InterestPanel"
 
 export function getSaved() {
 	return axios.get('/history')
@@ -12,6 +11,23 @@ export function calculate(bands, baseAmount) {
 		bands,
 		baseAmount
 	})
+		.then(response => {
+			return response.data
+		});
+}
+
+export function persist(bands, baseAmount) {
+	return axios.post('/persist', {
+		bands,
+		baseAmount
+	})
+		.then(response => {
+			return response.data
+		});
+}
+
+export function deleteAllSaved() {
+	return axios.delete('/history')
 		.then(response => {
 			return response.data
 		});
