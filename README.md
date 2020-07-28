@@ -8,14 +8,15 @@
 
 ## Non-functional Assumptions
 
-* All components running locally, single user mode
+* All components running locally, single user mode, within an IDE
 * No need to distinguish users
 * No security requirements (http, mongo credentials stored in a local config file)
 * No need for i81n / l10n / a11y
+* Currency will not be declared as any specific currency
 
 ## Functional Assumptions
 
-* Currency used will be GBP / USD like (whole units, 100 subunits), but not declared as any specific currency
+* Currency used will be whole units, to avoid float issues
 * Interest rates can be positive, zero, and negative integers
 * The first interest rate band must start at zero
 * The last interest rate band may have no upper bound, in which case it applies any amount above the upper bound, to Long.MAX_VALUE. If it does have an upper bound, any money above that accrues no interest.
@@ -75,3 +76,8 @@
 * Add persistence and retrieval
 * Improve styling
 * Finish frontend
+
+## Future Work
+
+* Better handling of JSON parsing errors from the back end
+* Handling of decimal currency amounts (while avoiding float rounding problems)
