@@ -7,5 +7,5 @@ public interface InterestService {
 
 	void clearHistory();
 
-	InterestDetails save(InterestDetails parameters);
+	InterestDetails[] persist(InterestDetails parameters);
 }

@@ -1,8 +1,13 @@
 package com.github.dgwatts.interest;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 public class InterestDetails {
 
-	private Long id;
+	@Id
+	@Field("_id")
+	private String id;
 
 	private InterestBand[] bands;
 
@@ -10,11 +15,11 @@ public class InterestDetails {
 
 	private long totalInterest;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public InterestDetails setId(Long id) {
+	public InterestDetails setId(String id) {
 		this.id = id;
 		return this;
 	}
